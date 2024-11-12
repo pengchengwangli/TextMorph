@@ -55,6 +55,9 @@ def generate_handwritten_image(request):
         perturb_y_sigma = json_data['perturb_y_sigma']
         # 笔画旋转偏移随机扰动
         perturb_theta_sigma = json_data['perturb_theta_sigma']
+        if is_upload_image:
+            image = request.FILES.get('image')
+
 
 
 
