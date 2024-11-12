@@ -58,4 +58,3 @@ def generate_handwritten_image(request):
 
 
 
-
