@@ -31,12 +31,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    # 'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'api.apps.ApiConfig',
+    'user.apps.UserConfig',
 ]
 
 MIDDLEWARE = [
@@ -117,6 +119,19 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+'''
+`STATIC_ROOT` 是 Django 设置中的一个配置项，用于指定在部署时收集静态文件的目录。静态文件包括 CSS、JavaScript、图像等。通过运行 `collectstatic` 命令，Django 会将所有应用中的静态文件收集到 `STATIC_ROOT` 指定的目录中，以便在生产环境中由 Web 服务器提供服务。
+
+在你的代码中，`STATIC_ROOT` 被设置为 `BASE_DIR / 'staticfiles'`，这意味着静态文件将被收集到项目根目录下的 `staticfiles` 文件夹中。
+'''
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
