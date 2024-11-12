@@ -14,13 +14,18 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path, re_path
+from django.conf.urls import handler400
+# from django.contrib import admin
+from django.urls import path, re_path, include
 from django.views.static import serve
 from django.conf import settings
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
+    path('test/', include('api.urls', namespace='api'), name='test'),
+    # include('api.urls', namespace='api'),
     re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}, name='static'),
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}, name='media'),
 ]
+handler404 = 'TextMorph.views.page_not_found'
+handler500 = 'TextMorph.views.page_error'
