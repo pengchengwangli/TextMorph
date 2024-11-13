@@ -114,6 +114,34 @@ USE_I18N = True
 
 USE_TZ = True
 
+#字体文件路径
+FONT_PATH = BASE_DIR / 'font_files'
+FONT_NAME_MAP = {
+    '方正黑体简体': 'FZHTJW.TTF',
+    '方正楷体简体': 'FZKTJW.TTF',
+    '方正仿宋简体': 'FZFSJW.TTF',
+    '方正行楷简体': 'FZXK.TTF',
+    '方正黄草简体': 'FZHCJW.TTF',
+    '方正姚体简体': 'FZYTJW.TTF',
+    '方正细黑简体': 'FZLTHJW.TTF',
+    '方正粗黑简体': 'FZCHJW.TTF',
+    '方正楷体_GBK': 'FZKTK.TTF',
+    '方正小标宋简体': 'FZXBSJW.TTF',
+    '方正隶书简体': 'FZLSJW.TTF',
+    '方正书宋简体': 'FZSSJW.TTF',
+    '方正仿宋_GBK': 'FZFSK.TTF',
+    '方正黑体_GBK': 'FZHTK.TTF',
+    '方正琥珀简体': 'FZHPJW.TTF',
+    '方正隶二简体': 'FZL2JW.TTF',
+    '方正硬笔行书简体': 'FZYBXSJW.TTF',
+    '方正硬笔楷书简体': 'FZYBKSJW.TTF',
+    '方正硬笔行楷简体': 'FZYBXKJW.TTF',
+    '方正硬笔仿宋简体': 'FZYBFSJW.TTF',
+    '方正硬笔隶书简体': 'FZYBLSJW.TTF',
+    '方正硬笔楷体简体': 'FZYBKJW.TTF',
+    '方正硬笔行楷简体': 'FZYBXKJW.TTF',
+    '方正硬笔仿宋简体': 'FZYBFSJW.TTF',
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
