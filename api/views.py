@@ -1,5 +1,6 @@
 import io
 import json
+import tempfile
 
 from PIL import Image, ImageFont
 # from PIL.ImageFont import ImageFont
@@ -17,7 +18,9 @@ def generate_handwritten_image(request):
     if request.method == 'GET':
         return render(request, 'test_01.html')
     else:
-
+        # 用户上传的文本信息
+        text_info = request.POST.get('text_info')
+        # 用户上传的json数据
         json_test = request.POST.get('json_data')
         json_data = json.loads(json_test)
         # 是否上传了图片布尔值变量名
@@ -129,3 +132,6 @@ def generate_handwritten_image(request):
             strikethrough_probability=strikethrough_probability,  # 删除线出现的概率
             ink_depth_sigma = ink_depth_sigma
         )
+        image = handwrite(text_info,template)
+        temp_dir_path = tempfile.mkdtemp()
+        temp_file_name = f'{temp_dir_path}/handwritten_image.jpg'
