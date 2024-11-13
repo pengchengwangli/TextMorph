@@ -57,7 +57,7 @@ def generate_handwritten_image(request):
         perturb_theta_sigma = json_data['perturb_theta_sigma']
         if is_upload_image:
             image = request.FILES.get('image')
-            #git更新
+            #gitgen
 
 
 
