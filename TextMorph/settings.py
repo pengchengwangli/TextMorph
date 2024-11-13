@@ -15,7 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = 'django-insecure-l9$rb=rz1p+b%t-312du0u1ndf^0apf0y6=lbu4^g=(hvp#lm#
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -72,7 +70,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'TextMorph.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
@@ -82,7 +79,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -102,7 +98,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
@@ -114,33 +109,14 @@ USE_I18N = True
 
 USE_TZ = True
 
-#字体文件路径
+# 字体文件路径
 FONT_PATH = BASE_DIR / 'font_files'
 FONT_NAME_MAP = {
-    '方正黑体简体': 'FZHTJW.TTF',
-    '方正楷体简体': 'FZKTJW.TTF',
-    '方正仿宋简体': 'FZFSJW.TTF',
-    '方正行楷简体': 'FZXK.TTF',
-    '方正黄草简体': 'FZHCJW.TTF',
-    '方正姚体简体': 'FZYTJW.TTF',
-    '方正细黑简体': 'FZLTHJW.TTF',
-    '方正粗黑简体': 'FZCHJW.TTF',
-    '方正楷体_GBK': 'FZKTK.TTF',
-    '方正小标宋简体': 'FZXBSJW.TTF',
-    '方正隶书简体': 'FZLSJW.TTF',
-    '方正书宋简体': 'FZSSJW.TTF',
-    '方正仿宋_GBK': 'FZFSK.TTF',
-    '方正黑体_GBK': 'FZHTK.TTF',
-    '方正琥珀简体': 'FZHPJW.TTF',
-    '方正隶二简体': 'FZL2JW.TTF',
-    '方正硬笔行书简体': 'FZYBXSJW.TTF',
-    '方正硬笔楷书简体': 'FZYBKSJW.TTF',
-    '方正硬笔行楷简体': 'FZYBXKJW.TTF',
-    '方正硬笔仿宋简体': 'FZYBFSJW.TTF',
-    '方正硬笔隶书简体': 'FZYBLSJW.TTF',
-    '方正硬笔楷体简体': 'FZYBKJW.TTF',
-    '方正硬笔行楷简体': 'FZYBXKJW.TTF',
-    '方正硬笔仿宋简体': 'FZYBFSJW.TTF',
+    '云烟体': '云烟体.ttf',
+    '华阳手写体': '华阳手写体.ttf',
+    '李国夫手写体': '李国夫手写体.ttf',
+    '神韵英子楷书': '神韵英子楷书.ttf',
+    '青叶手写体': '青叶手写体.ttf'
 }
 
 # Static files (CSS, JavaScript, Images)
@@ -159,7 +135,6 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
