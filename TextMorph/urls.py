@@ -19,11 +19,13 @@ from django.conf.urls import handler400
 from django.urls import path, re_path, include
 from django.views.static import serve
 from django.conf import settings
+from TextMorph import views
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
-    path('test/', include('api.urls', namespace='api'), name='test'),
-    # include('api.urls', namespace='api'),
+    path('api/', include('api.urls', namespace='api'), name='api'),
+    path('',views.index, name='index'),
+    path('index/',views.index),
     re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}, name='static'),
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}, name='media'),
 ]

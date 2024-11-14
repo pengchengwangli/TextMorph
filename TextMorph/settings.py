@@ -37,6 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'api.apps.ApiConfig',
     'user.apps.UserConfig',
+    'django_crontab',
+]
+
+CRONJOBS = [
+    ('0 0 * * *', 'api.management.commands.cleanup_media')  # 每天凌晨运行
 ]
 
 MIDDLEWARE = [
@@ -118,6 +123,8 @@ FONT_NAME_MAP = {
     '神韵英子楷书': '神韵英子楷书.ttf',
     '青叶手写体': '青叶手写体.ttf'
 }
+START_CHARS = "“（[<{‘" # 不应放在行尾的字符集合
+END_CHARS = "”）]>}" # 不应放在行首的字符集合
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/

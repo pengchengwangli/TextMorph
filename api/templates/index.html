@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手写图像生成</title>
+    <!-- 引入Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container py-5">
+    <h2 class="text-center mb-4">生成手写图像</h2>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form id="handwriteForm">
+                <!-- 基本属性 -->
+                <div class="mb-3">
+                    <label for="text_info" class="form-label">文本内容</label>
+                    <textarea id="text_info" name="text_info" rows="4" class="form-control"
+                              placeholder="请输入文本..."></textarea>
+                </div>
+
+                <!-- 是否上传背景图片 -->
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="is_upload_image"
+                           onchange="toggleUpload('image')">
+                    <label class="form-check-label" for="is_upload_image">上传背景图片</label>
+                </div>
+                <div id="uploadImage" class="mb-3" style="display: none;">
+                    <label for="background_image" class="form-label">选择背景图片</label>
+                    <input type="file" id="background_image" name="background_image" class="form-control">
+                </div>
+
+                <!-- 是否上传自定义字体 -->
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="is_upload_font" onchange="toggleUpload('font')">
+                    <label class="form-check-label" for="is_upload_font">上传自定义字体</label>
+                </div>
+                <div id="uploadFont" class="mb-3" style="display: none;">
+                    <label for="custom_font" class="form-label">选择字体文件</label>
+                    <input type="file" id="custom_font" name="custom_font" class="form-control">
+                </div>
+
+                <!-- 纸张尺寸和基本设置 -->
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="paper_width" class="form-label">纸张宽度 (w)</label>
+                        <input type="number" id="paper_width" name="paper_width" class="form-control"
+                               placeholder="单位：像素">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="paper_height" class="form-label">纸张高度 (h)</label>
+                        <input type="number" id="paper_height" name="paper_height" class="form-control"
+                               placeholder="单位：像素">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="margin_top" class="form-label">上边距</label>
+                        <input type="number" id="margin_top" name="margin_top" class="form-control"
+                               placeholder="单位：像素">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="margin_bottom" class="form-label">下边距</label>
+                        <input type="number" id="margin_bottom" name="margin_bottom" class="form-control"
+                               placeholder="单位：像素">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="margin_left" class="form-label">左边距</label>
+                        <input type="number" id="margin_left" name="margin_left" class="form-control"
+                               placeholder="单位：像素">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="margin_right" class="form-label">右边距</label>
+                        <input type="number" id="margin_right" name="margin_right" class="form-control"
+                               placeholder="单位：像素">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="line_spacing" class="form-label">行间距</label>
+                        <input type="number" id="line_spacing" name="line_spacing" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="word_spacing" class="form-label">字间距</label>
+                        <input type="number" id="word_spacing" name="word_spacing" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="font_size" class="form-label">字体大小</label>
+                        <input type="number" id="font_size" name="font_size" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">字体颜色</label>
+                        <div class="d-flex align-items-center">
+                            <!-- 颜色选择按钮 -->
+                            <button type="button" class="btn btn-outline-secondary me-2"
+                                    onclick="document.getElementById('fontColorInput').click();">选择颜色
+                            </button>
+                            <input type="color" id="fontColorInput" class="visually-hidden"
+                                   onchange="updateColorPreview(this.value)">
+                            <!-- 颜色预览块 -->
+                            <div id="colorPreview"
+                                 style="width: 30px; height: 30px; background-color: #000000; border: 1px solid #ddd;"></div>
+                        </div>
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="font_select" class="form-label">选择字体</label>
+                        <select id="font_select" name="font_select" class="form-select">
+                            <option value="">-- 请选择字体 --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 高级属性 -->
+                <div class="mt-4">
+                    <button class="btn btn-link" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#advancedOptions" aria-expanded="false" aria-controls="advancedOptions">
+                        高级属性
+                    </button>
+                    <div class="collapse" id="advancedOptions">
+                        <div class="card card-body mt-3">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="line_spacing_sigma" class="form-label">行间距随机扰动</label>
+                                    <input type="number" id="line_spacing_sigma" name="line_spacing_sigma"
+                                           class="form-control" step="0.1">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="font_size_sigma" class="form-label">字体大小随机扰动</label>
+                                    <input type="number" id="font_size_sigma" name="font_size_sigma"
+                                           class="form-control" step="0.1">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="word_spacing_sigma" class="form-label">字间距随机扰动</label>
+                                    <input type="number" id="word_spacing_sigma" name="word_spacing_sigma"
+                                           class="form-control" step="0.1">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="perturb_x_sigma" class="form-label">横向偏移随机扰动</label>
+                                    <input type="number" id="perturb_x_sigma" name="perturb_x_sigma"
+                                           class="form-control" step="0.1">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="perturb_y_sigma" class="form-label">纵向偏移随机扰动</label>
+                                    <input type="number" id="perturb_y_sigma" name="perturb_y_sigma"
+                                           class="form-control" step="0.1">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="perturb_theta_sigma" class="form-label">旋转偏移随机扰动</label>
+                                    <input type="number" id="perturb_theta_sigma" name="perturb_theta_sigma"
+                                           class="form-control" step="0.1">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="ink_depth_sigma" class="form-label">墨水深度随机扰动</label>
+                                    <input type="number" id="ink_depth_sigma" name="ink_depth_sigma"
+                                           class="form-control" step="0.1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 生成预览和生成图像按钮 -->
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="button" class="btn btn-outline-primary w-100 me-2" onclick="submitForm(true)">
+                        生成预览
+                    </button>
+                    <button type="button" class="btn btn-primary w-100 ms-2" onclick="submitForm(false)">生成图像
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <a id="zipLink" href="#" class="btn btn-success mt-3" style="display: none;" download>下载生成的图像文件</a>
+    <!-- 预览结果显示 -->
+    <div id="result" class="mt-4 text-center">
+        <img src="placeholder.png" id="previewImage" class="img-fluid" alt="预览图像" style="display: none;">
+    </div>
+
+    <!-- “请稍等”提示框 -->
+    <div id="loadingIndicator" class="text-center mt-4" style="display: none;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">请稍等...</span>
+        </div>
+        <p>正在生成，请稍等...</p>
+    </div>
+</div>
+
+<!-- 引入Bootstrap 5 和 JS库 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    function showLoadingIndicator() {
+        document.getElementById("previewImage").style.display = "none";
+        document.getElementById("zipLink").style.display = "none";
+        document.getElementById("loadingIndicator").style.display = "block";
+    }
+
+    function hideLoadingIndicator() {
+        document.getElementById("loadingIndicator").style.display = "none";
+
+
+    }
+    function toggleUpload(type) {
+        document.getElementById(type === 'image' ? 'uploadImage' : 'uploadFont').style.display =
+            document.getElementById(type === 'image' ? 'is_upload_image' : 'is_upload_font').checked ? 'block' : 'none';
+    }
+
+    function updateColorPreview(color) {
+        document.getElementById('colorPreview').style.backgroundColor = color;
+        document.getElementById('fontColorInput').value = color;
+    }
+
+    function submitForm(isPreview) {
+        showLoadingIndicator(); // 显示加载提示
+        const formData = new FormData();
+        const textInfo = document.getElementById("text_info").value;
+        const jsonData = {
+            is_upload_image: document.getElementById("is_upload_image").checked,
+            is_upload_font: document.getElementById("is_upload_font").checked,
+            font_name: document.getElementById("font_select").value || "云烟体",
+            is_preview: isPreview,
+            custom_paper_size: {
+                w: parseInt(document.getElementById("paper_width").value) || 2100,
+                h: parseInt(document.getElementById("paper_height").value) || 2970
+            },
+            top: parseInt(document.getElementById("margin_top").value) || 0,
+            bottom: parseInt(document.getElementById("margin_bottom").value) || 0,
+            left: parseInt(document.getElementById("margin_left").value) || 0,
+            right: parseInt(document.getElementById("margin_right").value) || 0,
+            line_spacing: parseInt(document.getElementById("line_spacing").value) || 100,
+            word_spacing: parseInt(document.getElementById("word_spacing").value) || 4,
+            font_size: parseInt(document.getElementById("font_size").value) || 80,
+            font_color: document.getElementById("fontColorInput").value || "#000000",
+            line_spacing_sigma: parseFloat(document.getElementById("line_spacing_sigma").value) || 6,
+            font_size_sigma: parseFloat(document.getElementById("font_size_sigma").value) || 2,
+            word_spacing_sigma: parseFloat(document.getElementById("word_spacing_sigma").value) || 2,
+            perturb_x_sigma: parseFloat(document.getElementById("perturb_x_sigma").value) || 1,
+            perturb_y_sigma: parseFloat(document.getElementById("perturb_y_sigma").value) || 1,
+            perturb_theta_sigma: parseFloat(document.getElementById("perturb_theta_sigma").value) || 0.15,
+            ink_depth_sigma: parseFloat(document.getElementById("ink_depth_sigma").value) || 0.2
+        };
+        formData.append("text_info", textInfo);
+        formData.append("json_data", JSON.stringify(jsonData));
+        formData.append("preview", isPreview);
+
+        // 如果需要上传图片或字体，则附加文件
+        if (jsonData.is_upload_image) {
+            formData.append("background_image", document.getElementById("background_image").files[0]);
+        }
+        if (jsonData.is_upload_font) {
+            formData.append("custom_font", document.getElementById("custom_font").files[0]);
+        }
+
+        // 发送AJAX请求到服务器
+        fetch("/api/generate_handwritten_image/", {
+            method: "POST",
+            body: formData
+        }).then(response => response.json())  // 更新为处理JSON响应
+            .then(data => {
+                if (data.is_preview) {
+                    // 如果是预览，显示图片
+                    document.getElementById("previewImage").src = data.img;
+                    document.getElementById("previewImage").style.display = "block";
+                    // 隐藏ZIP链接（如果有的话）
+                    document.getElementById("zipLink").style.display = "none";
+                    hideLoadingIndicator(); // 请求完成后隐藏加载提示
+                } else {
+                    // 如果不是预览，显示ZIP文件链接
+                    const zipLink = document.getElementById("zipLink");
+                    zipLink.href = data.zip;
+                    zipLink.style.display = "block";
+                    // 隐藏图片预览
+                    document.getElementById("previewImage").style.display = "none";
+                    hideLoadingIndicator(); // 请求完成后隐藏加载提示
+                }
+            }).catch(error => console.error("生成图像出错：", error));
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch("/api/get_font_list/")
+            .then(response => response.json())
+            .then(data => {
+                const fontSelect = document.getElementById("font_select");
+                data.fonts.forEach(fontName => {
+                    const option = document.createElement("option");
+                    option.value = fontName;
+                    option.textContent = fontName;
+                    fontSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error("获取字体列表出错：", error));
+    });
+</script>
+
+</body>
+</html>

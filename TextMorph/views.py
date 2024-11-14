@@ -6,3 +6,6 @@ def page_not_found(request, exception):
 
 def page_error(request):
     return render(request, '500.html')
+
+def index(request):
+    return render(request, 'index.html')
