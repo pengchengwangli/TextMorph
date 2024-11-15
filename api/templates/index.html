@@ -80,7 +80,7 @@
 <nav class="navbar navbar-expand-lg">
     <div class="container">
         <a class="navbar-brand" href="#">
-            TextMorph
+            ✍️ TextMorph
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
@@ -89,9 +89,6 @@
 
         <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" href="#">首页</a>
-                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">历史记录</a>
                 </li>
@@ -104,12 +101,23 @@
                 <a href="https://github.com/pengchengwangli/TextMorph" class="btn btn-custom btn-outline-light me-2" target="_blank">
                     <i class="bi bi-github"></i> GitHub
                 </a>
-                <button class="btn btn-custom btn-light" type="button">开始使用</button>
+                <!-- 用户信息和VIP状态 -->
+                {% if user.is_authenticated %}
+                    <span class="navbar-text ms-3">
+                        欢迎, {{ user.username }}
+                        {% if user.profile.is_VIP %}
+                            <span class="badge bg-warning text-dark">VIP</span>
+                        {% endif %}
+                    </span>
+                    <a href="/logout" class="btn btn-outline-light ms-2">登出</a>
+                {% else %}
+                    <a href="/login" class="btn btn-outline-light ms-2">登录</a>
+                    <a href="/register" class="btn btn-light ms-2">注册</a>
+                {% endif %}
             </div>
         </div>
     </div>
 </nav>
-
 <div class="container py-5">
 {#    <h2 class="text-center mb-4">生成手写图像</h2>#}
     <div class="card shadow-sm">
