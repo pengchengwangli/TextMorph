@@ -161,7 +161,7 @@
     <div class="card shadow-sm fade-in">
         <div class="card-body">
             <h2 class="mb-4">登录</h2>
-            <form action="/login" method="post">
+            <form id="loginForm" method="post">
                 {% csrf_token %}
                 <div class="mb-4">
                     <label for="username" class="form-label">用户名</label>
@@ -174,8 +174,7 @@
                 <button type="submit" class="btn btn-primary w-100">登录</button>
             </form>
             <div class="mt-3 text-center">
-                <a href="/user/register/" class="text-decoration-none"
-                   style="color: var(--primary-color);">没有账号？注册</a>
+                <a href="/user/register/" class="text-decoration-none" style="color: var(--primary-color);">没有账号？注册</a>
             </div>
         </div>
     </div>
@@ -183,5 +182,28 @@
 
 <!-- 引入Bootstrap 5 和 JS库 -->
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script>
+document.getElementById('loginForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const formData = new FormData(this);
+    fetch('/user/login/', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+        },
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.ok) {
+            alert(data.msg);
+            window.location.href = '/';
+        } else {
+            alert(data.msg);
+        }
+    })
+    .catch(error => console.error('Error:', error));
+});
+</script>
 </body>
 </html>
