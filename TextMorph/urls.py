@@ -26,6 +26,7 @@ urlpatterns = [
     path('api/', include('api.urls', namespace='api'), name='api'),
     path('',views.index, name='index'),
     path('index/',views.index),
+    path('user/', include('user.urls', namespace='user'), name='user'),
     re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}, name='static'),
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}, name='media'),
 ]
