@@ -53,9 +53,9 @@ def generate_handwritten_image(request):
             image_file = request.FILES.get('image')
             # image 是 UploadedFile 的一个实例，它是 Django 提供的用于处理文件上传的类。该类包含与上传文件交互的属性和方法，例如 name、size、content_type、read() 和 chunks()。
             image_data = io.BytesIO(image_file.read())
-            image = Image.open(image_data)
             # 将图形转换成GRB格式
-            image_data = image_data.getvalue()
+            # image_data = image_data.getvalue()
+            image = Image.open(image_data)
         else:
             #创建RGB格式的白色背景图像
             image = Image.new(mode="RGB", size=(custom_paper_size['w'], custom_paper_size['h']), color=(255, 255, 255))

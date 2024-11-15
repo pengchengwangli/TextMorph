@@ -34,7 +34,7 @@
         .navbar {
             background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-            padding: 20px 0;
+            padding: 16px 0;
             border-bottom: 3px solid var(--accent-color);
         }
 
@@ -499,7 +499,7 @@
 
     <a id="zipLink" href="#" class="btn btn-success mt-4 fade-in" style="display: none;" download>下载生成的图像文件</a>
     <!-- 预览结果显示 -->
-    <div id="result" class="mt-4 text-center fade-in">
+    <div id="result" class="mt-4 d-flex justify-content-center fade-in">
         <img src="placeholder.png" id="previewImage" class="img-fluid" alt="预览图像" style="display: none;">
     </div>
 
@@ -582,10 +582,10 @@
 
         // 如果需要上传图片或字体，则附加文件
         if (jsonData.is_upload_image) {
-            formData.append("background_image", document.getElementById("background_image").files[0]);
+            formData.append("image", document.getElementById("background_image").files[0]);
         }
         if (jsonData.is_upload_font) {
-            formData.append("custom_font", document.getElementById("custom_font").files[0]);
+            formData.append("font_file", document.getElementById("custom_font").files[0]);
         }
 
         // 发送AJAX请求到服务器
