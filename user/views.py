@@ -1,8 +1,9 @@
+# from django.contrib.redirects.models import Redirect
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-
 from user.models import CustomUser
+from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login, logout
 
 
@@ -20,19 +21,21 @@ def user_login(request):
                 return JsonResponse({'ok': False, 'msg': '账号或密码错误1'})
             if not CustomUser.objects.filter(username=username).exists():
                 return JsonResponse({'ok': False, 'msg': '账号或密码错误2'})
-            user = authenticate(username=username, password=password)
+            user = authenticate(request, username=username, password=password)
             if user:
                 login(request, user)
                 return JsonResponse({'ok': True, 'msg': '登录成功,即将跳转到首页'})
             else:
                 return JsonResponse({'ok': False, 'msg': '账号或密码错误3'})
     except Exception as e:
+        print(e)
         return JsonResponse({'ok': False, 'msg': '服务器错误，请稍后再试。'}, status=500)
 
 
 def user_logout(request):
     logout(request)
-    return JsonResponse({'ok': True, 'msg': '退出成功'})
+    #跳转到主页
+    return redirect('index')
 
 
 def user_register(request):
