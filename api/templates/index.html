@@ -76,15 +76,15 @@
                     </div>
                     <div class="col-md-6">
                         <label for="line_spacing" class="form-label">行间距</label>
-                        <input type="number" id="line_spacing" name="line_spacing" class="form-control">
+                        <input type="number" id="line_spacing" name="line_spacing" class="form-control" placeholder="单位：像素">
                     </div>
                     <div class="col-md-6">
                         <label for="word_spacing" class="form-label">字间距</label>
-                        <input type="number" id="word_spacing" name="word_spacing" class="form-control">
+                        <input type="number" id="word_spacing" name="word_spacing" class="form-control" placeholder="单位：像素,但是必须大于[字体大小//2]">
                     </div>
                     <div class="col-md-6">
                         <label for="font_size" class="form-label">字体大小</label>
-                        <input type="number" id="font_size" name="font_size" class="form-control">
+                        <input type="number" id="font_size" name="font_size" class="form-control" placeholder="建议字体不要小于70">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">字体颜色</label>
@@ -116,6 +116,7 @@
                         高级属性
                     </button>
                     <div class="collapse" id="advancedOptions">
+                        <p>以下参数属性均为"高斯分布的标准差"</p>
                         <div class="card card-body mt-3">
                             <div class="row g-3">
                                 <div class="col-md-6">
@@ -183,7 +184,11 @@
         </div>
         <p>正在生成，请稍等...</p>
     </div>
+    <div id="errorMessage" class="alert alert-danger mt-4" style="display: none;">
+        获取失败，服务器返回异常。
+    </div>
 </div>
+
 
 <!-- 引入Bootstrap 5 和 JS库 -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
@@ -199,6 +204,12 @@
         document.getElementById("loadingIndicator").style.display = "none";
 
 
+    }
+    function showErrorMessage() {
+        document.getElementById("previewImage").style.display = "none";
+        document.getElementById("zipLink").style.display = "none";
+        document.getElementById("loadingIndicator").style.display = "none";
+        document.getElementById("errorMessage").style.display = "block"; // 显示错误消息
     }
     function toggleUpload(type) {
         document.getElementById(type === 'image' ? 'uploadImage' : 'uploadFont').style.display =
@@ -273,7 +284,7 @@
                     document.getElementById("previewImage").style.display = "none";
                     hideLoadingIndicator(); // 请求完成后隐藏加载提示
                 }
-            }).catch(error => console.error("生成图像出错：", error));
+            }).catch(error => showErrorMessage());
     }
 
     document.addEventListener("DOMContentLoaded", function () {
@@ -288,7 +299,7 @@
                     fontSelect.appendChild(option);
                 });
             })
-            .catch(error => console.error("获取字体列表出错：", error));
+            .catch(error => showErrorMessage());
     });
 </script>
 
