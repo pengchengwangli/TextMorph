@@ -9,13 +9,13 @@ TextMorph 提供了一个简洁的界面，允许用户输入文本并生成模�
 
 ![image-20241117002536257](https://github.com/pengchengwangli/TextMorph/blob/master/imgs/image-20241117002536257.png)
 
-![image-20241117002614239](.\imgs\image-20241117002614239.png)
+![image-20241117002614239](https://github.com/pengchengwangli/TextMorph/blob/master/imgs/image-20241117002614239.png)
 
-![image-20241117002843234](.\imgs\image-20241117002843234.png)
+![image-20241117002843234](https://github.com/pengchengwangli/TextMorph/blob/master/imgs/image-20241117002746452.png)
 
-![image-20241117002746452](.\imgs\image-20241117002746452.png)
+![image-20241117002746452](https://github.com/pengchengwangli/TextMorph/blob/master/imgs/image-20241117002808132.png)
 
-![image-20241117002808132](.\imgs\image-20241117002808132.png)
+![image-20241117002808132](https://github.com/pengchengwangli/TextMorph/blob/master/imgs/image-20241117002843234.png)
 
 ## 功能
 
