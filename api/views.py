@@ -2,9 +2,9 @@ import io
 import json
 import os
 import shutil
-import tempfile
+# import tempfile
 import time
-
+from django.core.paginator import Paginator
 from PIL import Image, ImageFont
 # from PIL.ImageFont import ImageFont
 from user.models import CustomUser , DownloadHistory
@@ -154,23 +154,30 @@ def get_font_list(request):
         fonts['fonts'].append(key)
     return JsonResponse(fonts)
 
+def download_history(request):
+    return render(request, 'downloadHistory.html')
+
 def get_download_history(request):
-    if request.method == 'GET':
-        return render(request, 'downloadHistory.html')
     user = request.user
     download_history = DownloadHistory.objects.filter(user=user)
-    #返回下载记录和下载链接包含时间,使用json格式
+    print(download_history)
+    items_per_page = int(request.GET.get('itemsPerPage', 10))
+    page_number = int(request.GET.get('page', 1))
+    paginator = Paginator(download_history, items_per_page)
+    page_obj = paginator.get_page(page_number)
+
     download_history_list = []
-    for history in download_history:
+    for history in page_obj:
         download_history_list.append({
             'url': history.url,
             'download_time': history.download_time
         })
+
     res = {
-        'download_history': download_history_list
+        'download_history': download_history_list,
+        'total_items': paginator.count
     }
     return JsonResponse(res)
-
 
 
 

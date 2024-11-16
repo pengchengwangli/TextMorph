@@ -4,32 +4,337 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>下载记录 - TextMorph</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <title>下载记录</title>
+    <!-- 引入Bootstrap 5 CSS -->
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- 引入Google Fonts或其他二次元风格字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #ea724d; /* 鲜艳的橙红色主题 */
+            --secondary-color: #f0f8ff;
+            --hover-color: #ff9671;
+            --accent-color: #ff6ba3; /* 紫色用于点缀 */
+            --input-bg-color: #ffffff;
+            --input-border-color: #ff6f61;
+            --input-focus-border-color: #f376cf;
+            --button-bg-color: #ff6f61;
+            --button-hover-bg-color: #ff9671;
+            --badge-color: #f1cf7e;
+        }
+
         body {
             font-family: 'Roboto Mono', monospace;
-            background-color: #f8f9fa;
-            padding-top: 20px;
+            background: url('{% static 'img/background_img.jpg' %}') no-repeat center center fixed;
+            background-size: cover;
+            /* 如果需要渐变叠加在背景图片上，可以取消注释下面一行 */
+        {#background: linear-gradient(rgba(245, 247, 250, 0.8), rgba(195, 207, 226, 0.8)), url('https://t.mwm.moe/pc') no-repeat center center fixed;#}
         }
-        .container {
-            max-width: 800px;
-            margin: auto;
+
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            padding: 16px 0;
+            border-bottom: 3px solid var(--accent-color);
         }
-        .card {
-            margin-bottom: 20px;
+
+        .navbar-brand {
+            color: white !important;
+            font-weight: bold;
+            font-size: 28px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            font-family: 'Roboto Mono', monospace;
         }
-        .card-header {
-            background-color: #343a40;
+
+        .nav-link {
+            color: white !important;
+            font-weight: 600;
+            padding: 10px 20px !important;
+            transition: all 0.3s ease;
+            border-radius: 15px;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            color: var(--accent-color) !important;
+        }
+
+        .navbar-nav .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.4);
+            color: var(--accent-color) !important;
+        }
+
+        .btn-custom {
+            border-radius: 25px;
+            padding: 10px 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        .btn-outline-light {
+            border: 2px solid white;
             color: white;
         }
-        .card-body {
+
+        .btn-outline-light:hover {
+            background-color: var(--hover-color);
+            border-color: var(--hover-color);
+            color: white;
+        }
+
+        .btn-light {
             background-color: white;
+            color: var(--primary-color);
+            border: none;
+        }
+
+        .btn-light:hover {
+            background-color: var(--hover-color);
+            color: white;
+        }
+
+        #fontPreview {
+            font-family: 'Roboto Mono', monospace;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 10px 20px;
+            color: var(--primary-color);
+            margin-right: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            background: var(--secondary-color);
+        }
+
+        .dropdown-item {
+            color: var(--primary-color);
+            font-weight: 500;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--hover-color);
+            color: white;
+        }
+
+        .navbar-text {
+            color: white !important;
+            font-weight: 600;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .badge.bg-warning {
+            background-color: var(--badge-color);
+            margin-left: 10px;
+            font-size: 0.8em;
+            padding: 5px 10px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        /* 表单美化 */
+        .card {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .form-control {
+            background-color: var(--input-bg-color);
+            border: 2px solid var(--input-border-color);
+            border-radius: 15px;
+            padding: 10px 15px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        .form-control:focus {
+            border-color: var(--input-focus-border-color);
+            box-shadow: 0 0 10px rgba(246, 119, 255, 0.75);
+        }
+
+        .form-check-label {
+            font-weight: 500;
+            color: var(--primary-color);
+        }
+
+        .btn-outline-primary {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            background-color: transparent;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--hover-color);
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            border: none;
+            border-radius: 15px;
+            padding: 10px 20px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        /* 响应式布局调整 */
+        .container {
+            max-width: 100%;
+            padding: 0 15px;
+        }
+
+        @media (min-width: 576px) {
+            .container {
+                max-width: 540px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                max-width: 720px;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .container {
+                max-width: 960px;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1140px;
+            }
+        }
+
+        .card-body {
+            padding: 30px;
+        }
+
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+        }
+
+        .alert {
+            border-radius: 15px;
+        }
+
+        /* 动画效果 */
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 背景图片覆盖内容的效果 */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(245, 247, 250, 0.1);
+            z-index: -1;
+        }
+
+        /* CSS */
+        .upload-component {
+            opacity: 0;
+            visibility: hidden;
+            max-height: 0;
+            overflow: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease, max-height 0.3s ease;
+        }
+
+        .upload-component.show {
+            opacity: 1;
+            visibility: visible;
+            max-height: 500px; /* 根据内容调整 */
         }
     </style>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg fade-in">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            ✍️ TextMorph
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'api:download_history' %}">历史记录</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">使用教程</a>
+                </li>
+            </ul>
+            <div class="d-flex align-items-center">
+                <a href="https://github.com/pengchengwangli/TextMorph" class="btn btn-custom btn-outline-light me-2"
+                   target="_blank">
+                    <i class="bi bi-github"></i> GitHub
+                </a>
+                <!-- 用户信息和VIP状态 -->
+                {% if user.is_authenticated %}
+                    <span class="navbar-text ms-3 fade-in">
+                            欢迎, {{ user.username }}
+                        {% if user.profile.is_VIP %}
+                            <span class="badge bg-warning">VIP</span>
+                        {% endif %}
+                        </span>
+                    <a href="{% url 'user:logout' %}" class="btn btn-outline-light ms-2">登出</a>
+                {% else %}
+                    <a href="{% url 'user:login' %}" class="btn btn-outline-light ms-2">登录</a>
+                    <a href="{% url 'user:register' %}" class="btn btn-light ms-2">注册</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>
+
+
     <div class="container">
         <h1 class="text-center my-4">下载记录</h1>
         <div id="download-history-container" class="card">
@@ -38,27 +343,56 @@
                 <ul class="list-group" id="download-history-list">
                     <!-- 下载记录项将会被动态添加到这里 -->
                 </ul>
+                <nav>
+                    <ul class="pagination mt-4" id="pagination">
+                        <!-- 分页按钮将会被动态添加到这里 -->
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            fetch('/api/get_download_history/')
-                .then(response => response.json())
-                .then(data => {
-                    const downloadHistoryList = document.getElementById('download-history-list');
-                    data.download_history.forEach(history => {
-                        const listItem = document.createElement('li');
-                        listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
-                        listItem.innerHTML = `
-                            <span>${history.download_time}</span>
-                            <a href="${history.url}" class="btn btn-primary btn-sm">下载</a>
-                        `;
-                        downloadHistoryList.appendChild(listItem);
-                    });
-                })
-                .catch(error => console.error('Error fetching download history:', error));
+            const itemsPerPage = 10;
+            let currentPage = 1;
+
+            function fetchDownloadHistory(page) {
+                fetch(`/api/get_download_history/?page=${page}&itemsPerPage=${itemsPerPage}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const downloadHistoryList = document.getElementById('download-history-list');
+                        const pagination = document.getElementById('pagination');
+                        downloadHistoryList.innerHTML = '';
+                        pagination.innerHTML = '';
+
+                        data.download_history.forEach(history => {
+                            const listItem = document.createElement('li');
+                            listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+                            listItem.innerHTML = `
+                                <span>${history.download_time}</span>
+                                <a href="${history.url}" class="btn btn-primary btn-sm">下载</a>
+                            `;
+                            downloadHistoryList.appendChild(listItem);
+                        });
+
+                        const totalPages = Math.ceil(data.total_items / itemsPerPage);
+                        for (let i = 1; i <= totalPages; i++) {
+                            const pageItem = document.createElement('li');
+                            pageItem.className = `page-item ${i === page ? 'active' : ''}`;
+                            pageItem.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+                            pageItem.addEventListener('click', function(event) {
+                                event.preventDefault();
+                                currentPage = i;
+                                fetchDownloadHistory(currentPage);
+                            });
+                            pagination.appendChild(pageItem);
+                        }
+                    })
+                    .catch(error => console.error('Error fetching download history:', error));
+            }
+
+            fetchDownloadHistory(currentPage);
         });
     </script>
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
