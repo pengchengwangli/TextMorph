@@ -7,6 +7,7 @@ import time
 
 from PIL import Image, ImageFont
 # from PIL.ImageFont import ImageFont
+from user.models import CustomUser , DownloadHistory
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
@@ -119,7 +120,7 @@ def generate_handwritten_image(request):
         )
         image = handwrite(text_info, template)
         # temp_dir_path = tempfile.mkdtemp()
-        username = "test"
+        username = request.user.username
         temp_file_name = f'{username}_image' + str(time.time())
         os.mkdir(f'{settings.MEDIA_ROOT}/{temp_file_name}')
         for i, img in enumerate(image):
@@ -143,12 +144,32 @@ def generate_handwritten_image(request):
             'is_preview': False,
             "zip": zip_file_path
         }
+        user = request.user
+        DownloadHistory.objects.create(url=zip_file_path, user=user)
         return JsonResponse(res)
+
 def get_font_list(request):
     fonts = {'fonts': []}
     for key in settings.FONT_NAME_MAP:
         fonts['fonts'].append(key)
     return JsonResponse(fonts)
+
+def get_download_history(request):
+    if request.method == 'GET':
+        return render(request, 'downloadHistory.html')
+    user = request.user
+    download_history = DownloadHistory.objects.filter(user=user)
+    #返回下载记录和下载链接包含时间,使用json格式
+    download_history_list = []
+    for history in download_history:
+        download_history_list.append({
+            'url': history.url,
+            'download_time': history.download_time
+        })
+    res = {
+        'download_history': download_history_list
+    }
+    return JsonResponse(res)
 
 
 

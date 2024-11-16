@@ -38,7 +38,9 @@ def user_logout(request):
     return redirect('index')
 
 
+@csrf_exempt
 def user_register(request):
+    print("user_register")
     if request.method == 'GET':
         return render(request, 'register.html')
     else:
