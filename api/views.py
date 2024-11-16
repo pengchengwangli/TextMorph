@@ -155,7 +155,9 @@ def get_font_list(request):
     return JsonResponse(fonts)
 
 def download_history(request):
-    return render(request, 'downloadHistory.html')
+    if not request.user.is_authenticated:
+        return redirect('user:login')
+    return render(request, 'downloadHistory.html', {'user': request.user})
 
 def get_download_history(request):
     user = request.user
